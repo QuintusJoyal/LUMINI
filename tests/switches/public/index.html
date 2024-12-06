@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Client</title>
+    <style>
+        #toggleBtn {
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          position: absolute;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: xx-large;
+        }
+    </style>
+</head>
+<body>
+    <div id="toggleBtn">Toggle</div>
+
+    <script>
+        const toggleBtn = document.getElementById('toggleBtn');
+
+        async function updateStatus() {
+            const response = await fetch('/status');
+            const data = await response.json();
+            toggleBtn.style.backgroundColor = data.sendingData ? 'green' : 'grey';
+            toggleBtn.style.color = data.sendingData ? 'black' : 'white';
+        }
+
+        toggleBtn.addEventListener('click', async () => {
+            const response = await fetch('/toggle', { method: 'POST' });
+            const data = await response.json();
+            toggleBtn.style.backgroundColor = data.sendingData ? 'green' : 'grey';
+            toggleBtn.style.color = data.sendingData ? 'black' : 'white';
+        });
+
+        updateStatus();
+    </script>
+</body>
+</html>
